@@ -1,17 +1,21 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 
 import { toJSON } from "@reis/mongoose-to-json";
+
 
 
 const userSchema = new Schema({
 
   userName: { type: String},
   email: { type: String},
-  password: { type: String}
+  password: { type: String},
+  confirmPassword: {type: String},
+  userProfile: { type: Types.ObjectId, ref: 'Profile'}
+
 },{
     timestamps:true
 })
 
-userSchema.plugin.toJSON;
-export const User = model('user', userSchema);
+userSchema.plugin(toJSON);
+export const User_Model = model('User', userSchema);
 
