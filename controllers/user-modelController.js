@@ -11,7 +11,8 @@ export const signUp = async (req, res, next) => {
         const { error, value } = userSchema.validate(req.body);
 
         if (error) {
-            return res.status(400).send(error.details[0], message);
+            return res.status(400).send(error.details[0].
+                message);
         }
         //finding out if the user exists in the database
         const { email } = value
