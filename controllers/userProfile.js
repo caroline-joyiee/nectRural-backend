@@ -49,12 +49,12 @@ export const updateUserProfile = async (req, res) => {
             updateFields.image = req.file.image[0].image;
         }
 
-        // if (req,file?.profileImage) {
-        //     updateFields.profileImage = req.file.filename;
+        if (req,file?.profileImage) {
+            updateFields.profileImage = req.file.filename;
 
-        // } else if (req.file?.profileImage) {
-        //     updateFields.profileImage = req.file.profileImage[0].filename;
-        // }
+        } else if (req.file?.profileImage) {
+            updateFields.profileImage = req.file.profileImage[0].filename;
+        }
 
         const { error, value } = userProfileSchema.validate(updateFields);
 

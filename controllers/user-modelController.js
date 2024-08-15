@@ -98,9 +98,6 @@ export const getAllUsers = async (req, res) => {
 
     const filter = {};
 
-    if (email) {
-        filter.email = email;
-    }
 
     if (userName){
         filter.userName = userName;
@@ -112,6 +109,23 @@ export const getAllUsers = async (req, res) => {
     
 };
 
+export const getAllemail = async (req, res) => {
+
+    const email = req.query.email?.toLowerCase();
+    const userName = req.query.userName?.toLowerCase();
+
+    const filter = {};
+
+    if (email) {
+        filter.email = email;
+    }
+
+    
+    const users = await User_Model.find(filter);
+
+    return res.status(200).json({ users });
+    
+};
 
 // export const logout = async (req, res, next) => {
 //     try {

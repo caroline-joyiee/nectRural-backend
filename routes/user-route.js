@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllUsers, getUser, logIn, logout, signUp } from "../controllers/user-modelController.js";
+import { getAllemail, getAllUsers, getUser, logIn, logout, signUp } from "../controllers/user-modelController.js";
 import { checkUserAuth } from "../middleware/auth.js";
 
 
@@ -13,6 +13,6 @@ userRouter.get('/user/auth/signUp', getUser);
 
 userRouter.get('/user/auth/:userName', getAllUsers);
 
-userRouter.get('/user/auth/:email', getAllUsers);
+userRouter.get('/user/auth/:email', getAllemail);
 
 userRouter.post('/user/auth/logout', checkUserAuth, logout)
