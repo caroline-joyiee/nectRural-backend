@@ -4,114 +4,122 @@ import { repost_Model } from "../models/repost.js";
 import { share_Model } from "../models/share.js";
 import { commentSchema } from "../schema/comment.js";
 import { likeSchema } from "../schema/like.js";
+import { repostSchema } from "../schema/repost.js";
 import { shareSchema } from "../schema/share.js";
 
 
 
 export const likeContent = async (req, res) => {
-  try {
-    const { error, value} = likeSchema.validate(req.body);
-    if (error) { 
-        return res.status(400).send(error.details[0].message);
+    try {
+        const { error, value } = likeSchema.validate(req.body);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
 
+        }
+
+
+          const {userId} = req.params;
+
+        
+        // const { userId } = value;
+
+        const like = new like_Model({ userId });
+        await like.save();
+
+        res.status(201).json({ message: "Content liked sucessfully." })
+
+
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to like content' })
     }
-
-
-    //   const {userId} = req.body;
-
-      const {userId, contentId} = req.params;
-
-      const like = new like_Model({ userId, contentId});
-      await like.save();
-
-      res.status(201).json({ message: "Content liked sucessfully."})
-
-      
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to like content'})
-  }
 }
 
 //comment
-export const commentContent = async(req, res) => {
+export const commentContent = async (req, res) => {
     try {
-        const { error, value} = commentSchema.validate(req.body);
-    if (error) { 
-        return res.status(400).send(error.details[0].message);
+        const { error, value } = commentSchema.validate(req.body);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
 
-    }
+        }
 
 
         const { comment } = req.body;
-        const { contentId } = req.params;
-    
+        // const { contentId } = req.params;
+
         // Log incoming request data for debugging
         console.log('Request Body:', req.body);
-        console.log('Content ID:', contentId);
-    
-        const newComment = new comment ({ content: contentId, comment });
-        await newComment.save();
-    
+        // console.log('Content ID:', contentId);
+
+        const newComment = comment_Model.create({ comment });
+        // await comment_Model.save();
+
         res.status(201).json({ message: 'Comment added successfully.', commentId: newComment._id });
-      } catch (error) {
+    } catch (error) {
         console.error('Error adding comment:', error);
         res.status(500).json({ error: 'Failed to add comment.' });
-      }
+    }
 
-    } 
+}
 
 //share content
 
 export const shareContent = async (req, res) => {
     try {
-        const {error, value} = shareSchema.validate(req.body)
-        if (error) { 
+        const { error, value } = shareSchema.validate(req.body)
+        if (error) {
             return res.status(400).send(error.details[0].message);
-    
+
         }
         const { platform, message } = req.body;
-        const { contentId} = req.params;
+        const { contentId } = req.params;
 
-        const share = new share_Model({ content:contentId, platform, message })
+        const share = new share_Model({ content: contentId, platform, message })
         await share.save();
 
-        res.status(201).json({ message: "Contend Shared Successfully"})
+        res.status(201).json({ message: "Contend Shared Successfully", contentId: req.params })
     } catch (error) {
-        
-        res.status(500).json({ error: 'Failed to share content'})
+
+        res.status(500).json({ error: 'Failed to share content' })
     }
 }
 
 export const repostContent = async (req, res) => {
-   try {
-     const { error, value} = likeSchema.validate(req.body);
-     if (error) { 
-         return res.status(400).send(error.details[0].message);
- 
-     }
+    try {
+        const { error, value } = repostSchema.validate(req.body);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
 
-     const { message } = req.body;
-     const { contentId } = req. params;
+        }
 
-     const repost = new repost_Model({ content: contentId, message });
+        const { message } = req.body;
+        //  const { contentId } = req.params;
 
-     await repost.save();
+        const repost = new repost_Model({ content: message, content: req.params });
 
-     res.status(201).json({ message: 'Content reposted successfully', repostId: repost._id });
-       } catch (error) {
-      
+        await repost.save();
+
+        res.status(201).json({ message: 'Content reposted successfully' });
+    } catch (error) {
+
         res.status(500).json({ error: 'Failed to repost content.' });
-  }
-   }
+    }
+}
 
-export const getContentInteraction =async (req, res) => {
+export const getContentInteraction = async (req, res) => {
     try {
         const { contentId } = req.params;
+        const { comment } = req.body;
+        const { message } = req.body;
 
-        const comments = await comment_Model.find({ contend: contentId});
+        const { platform } = req.body;
+
+
+
+        const comments = await comment_Model.find({ content: comment });
         const likes = await like_Model.countDocuments({ content: contentId });
-        const shares = await share_Model.countDocuments({ content: contentId});
-        const reposts = await repost_Model.countDocuments({ content: contentId });
+        const shares = await share_Model.countDocuments({ content: contentId, platform, message});
+        const reposts = await repost_Model.countDocuments({ content: message });
 
         res.status(200).json({
             comments,

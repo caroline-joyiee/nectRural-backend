@@ -8,7 +8,7 @@ export const postProfile = async (req, res, next) => {
         const { error, value } = userProfileSchema.validate({ 
             ...req.body,
             image: req?.file?.filename,
-            // profileImage: req?.file?.filename,
+            profileimage: req?.file?.filename,
         });
 
         if (error) {

@@ -10,8 +10,8 @@ const userProfileSchema = new Schema({
         type: String,
         match: [/^https?:\/\/(www\.)?google\.[a-z]{2,}\/?/, 'Please enter a valid Google URL'] 
     },
-    image: {type: String}
-    // profileimage: { type: String }
+    image: {type: String},
+    profileimage: { type: String }
 
 },{
     timestamps: true

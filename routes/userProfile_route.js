@@ -7,12 +7,12 @@ import { deleteProfile, getAllProfile, postProfile, updateUserProfile } from "..
 
 export const userProfileRoute = Router();
 
-// userProfileRoute.post('/user/profile', upload.fields([
-//     {name: "image", maxCount: 1},
-//     {name: "profileImage", maxCount: 1},
-// ]), checkUserAuth, postProfile);
+userProfileRoute.post('/user/profile', upload.fields([
+    {name: "image", maxCount: 1},
+    {name: "profileimage", maxCount: 1},
+]), checkUserAuth, postProfile);
 
-userProfileRoute.post('/user/profiles', upload.single('image'), checkUserAuth, postProfile)
+// userProfileRoute.post('/user/profiles', upload.single('image'), checkUserAuth, postProfile)
 
 userProfileRoute.get('/user/profiles', checkUserAuth, getAllProfile);
 

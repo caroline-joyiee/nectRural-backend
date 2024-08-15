@@ -8,7 +8,6 @@ import cors from "cors";
 import { interactionsRouter } from "./routes/interaction.js";
 import { scrollingRouter } from "./routes/scrollingPAge-route.js";
 import expressOasGenerator from '@mickeymond/express-oas-generator';
-import createMongoStore from "mongo-store";
 
 const app = express()
 
@@ -34,9 +33,6 @@ app.use("/api/v1/health", (req, res) => {
 
 
 
-
-app.use(express.static('image'));
-// app.use(express.static('profileImage'))
 app.use(userProfileRoute);
 app.use(userRouter);
 app.use(interactionsRouter)

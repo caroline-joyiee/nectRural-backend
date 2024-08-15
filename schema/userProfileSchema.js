@@ -8,6 +8,6 @@ export const userProfileSchema =Joi.object({
   contact: Joi.string(),
   googleUrl: Joi.string(),
   image: Joi.string(),
-  profileImage:Joi.string()
+  profileimage:Joi.string()
 })
 
