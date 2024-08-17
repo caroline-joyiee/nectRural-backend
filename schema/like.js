@@ -1,5 +1,5 @@
 import Joi from "joi";
 
 export const likeSchema = Joi.object({
-    userId:Joi.string()
+    userId:Joi.boolean()
 })

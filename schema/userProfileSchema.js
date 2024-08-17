@@ -2,7 +2,7 @@ import Joi from "joi";
 
 
 export const userProfileSchema =Joi.object({
-  name: Joi.string(),
+  institionName: Joi.string(),
   about: Joi.string(),
   location: Joi.string(),
   contact: Joi.string(),

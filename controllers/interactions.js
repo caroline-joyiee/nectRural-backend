@@ -28,6 +28,13 @@ export const likeContent = async (req, res) => {
 
         res.status(201).json({ message: "Content liked sucessfully." })
 
+        // const unlike = new like_Model({ userId });
+        // await unlike.save();
+
+        // if(userUnlike){
+        //     return res.status(200).json({ message: "Content unliked successfully" })
+        // }
+
 
     } catch (error) {
         res.status(500).json({ error: 'Failed to like content' })

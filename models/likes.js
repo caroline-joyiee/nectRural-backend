@@ -4,7 +4,7 @@ import { model, Schema, Types } from "mongoose";
 
 const likeSchema = new Schema ({
     scrollingPage_Model: {type: Types.ObjectId, ref: 'ScrollingPage'},
-    userId: { type: String}
+    userId: { type: Boolean, default:false }
 },{
     timestamps: true
 })

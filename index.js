@@ -8,6 +8,7 @@ import cors from "cors";
 import { interactionsRouter } from "./routes/interaction.js";
 import { scrollingRouter } from "./routes/scrollingPAge-route.js";
 import expressOasGenerator from '@mickeymond/express-oas-generator';
+import { notificationRouter } from "./routes/notification-route.js";
 
 const app = express()
 
@@ -37,6 +38,7 @@ app.use(userProfileRoute);
 app.use(userRouter);
 app.use(interactionsRouter)
 app.use(scrollingRouter);
+app.use(notificationRouter);
 
 app.use(session({
   secret: process.env.SESSION_SECRET_KEY,
