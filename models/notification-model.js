@@ -8,7 +8,7 @@ const notificationSchema = new Schema({
     read: { type: Boolean, default: false },
     createdAt: {type: Date, default: Date.now },
     data: {type: mongoose.Schema.Types.Mixed, default: {} },
-    User_Model: { type: Types.ObjectId, ref: 'User'}
+    user: { type: Types.ObjectId, ref: 'User'}
 },{
     timestamps: true
 })

@@ -1,4 +1,4 @@
-import { model, Schema, Types } from "mongoose";
+import mongoose, { model, mongo, Schema, Types } from "mongoose";
 import { toJSON } from "@reis/mongoose-to-json";
 
 const userProfileSchema = new Schema({
@@ -12,7 +12,7 @@ const userProfileSchema = new Schema({
     },
     image: {type: String},
     profileimage: { type: String },
-    User_Model: {type: Types.ObjectId, ref:'User'}
+    user: {type: mongoose.Schema.Types.ObjectId , ref: 'User', select: false}
 
 },{
     timestamps: true

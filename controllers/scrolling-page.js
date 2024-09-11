@@ -43,26 +43,33 @@ export const postIssues = async (req, res) => {
 
 
 export const getIssues = async (req, res) => {
-    console.log(req.body)
     try {
-        const userId = req.session?.user?.id || req?.user?.id
-        console.log("User", userId)
+        const userId = req.session?.user?.id || req?.user.id;
 
-       const issues = await User_Model.findOne({ user: userId})
-        .populate({
-            path: "user",
-            select: "-password"
-        });
-        if (!issues) {
-            return res.status(400).json({ issues })
+        const issues = await scrollingPage_Model.find({ user: userId });
+
+        if (issues.length == 0) {
+            return res.status(200).json({ issue: issues });
         }
 
-        res.status(200).json({ issues })
-
+        res.status(200).json({ issue: issues});
     } catch (error) {
-        return res.status(500).json({ error })
+        res.status(400).json({ error: "error information"})
     }
 }
+
+export const getAllIssues = async (req, res) => {
+
+    const title =req.query.title?.toLowerCase();
+    const filter = {};
+    if (title){
+        filter.title = title;
+    }
+
+    const issue = await scrollingPage_Model.find(filter);
+    return res.status(200).json({ issue });
+}
+
 
 export const updateIssues = async(req, res) => {
     console.log(req.body)

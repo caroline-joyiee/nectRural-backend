@@ -7,13 +7,14 @@ export const postProfile = async (req, res, next) => {
       try {
         const { error, value } = userProfileSchema.validate({ 
             ...req.body,
-            image: req?.file?.filename,
+            image: req?.files?.filename,
             profileimage: req?.file?.filename,
         });
 
         if (error) {
             return res.status(400).send(error.details[0].message);
         }
+        
 
         const userId = req.session?.user?.id || req?.user.id;
         const user = await User_Model.findById(userId);
@@ -41,15 +42,15 @@ export const updateUserProfile = async (req, res) => {
     try {
         const updateFields = { ...req.body };
 
-        if (req.file?.image) {
+        if (req.files?.image) {
 
-            updateFields.image = req.file.filename;
+            updateFields.image = req.files?.filename;
 
-        } else if (req.file?.image) {
-            updateFields.image = req.file.image[0].image;
+        } else if (req.files?.image) {
+            updateFields.image = req.files.image[0].image;
         }
 
-        if (req,file?.profileImage) {
+        if (req.file?.profileImage) {
             updateFields.profileImage = req.file.filename;
 
         } else if (req.file?.profileImage) {
@@ -78,36 +79,60 @@ export const updateUserProfile = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        res.status(500).send("Server Error");
         
     }
 };
 
-export const getAllProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
     console.log(req.body)
 
         try {
-            const userId = res.session?.user?.id || req?.user.id;
+            const userId = req.session?.user?.id || req?.user.id;
+
+            // if(!userId){
+            //     return res.status(400).json({ error: "User ID not found in session or request." });
+            // }
 
             const profile = await userProfile.findOne({ user: userId })
                 .populate({
                     path: 'user',
                     select:'-password'
                 });
+              
                 if (!profile) {
-                    return res.status(200).json({ profile });
+                    return res.status(400).json({ error: "profile not found", userId: userId });
                 }
 
-                res.status(200).json({ profile });
+                res.status(200).json({ user: profile  });
+
+                
 
         } catch (error) {
 
-            return res.status(500).json({ error }) 
+            console.error(error);
+            return res.status(500).json({ error: "Server error" }); 
             
         }
 
 
 };
+
+export const getAllProfile = async (req, res) => {
+
+    const institionName = req.query.institionName?.toLowerCase();
+    const filter = {};
+
+    if (institionName){
+        filter.institionName = institionName;
+    }
+
+    // const profile = await .find(filter);
+
+    const profile = await userProfile.find(filter);
+    return res.status(200).json({ profile });
+
+}
 
 export const deleteProfile = async (req, res) => {
     try {

@@ -9,9 +9,21 @@ import { interactionsRouter } from "./routes/interaction.js";
 import { scrollingRouter } from "./routes/scrollingPAge-route.js";
 import expressOasGenerator from '@mickeymond/express-oas-generator';
 import { notificationRouter } from "./routes/notification-route.js";
+import http from 'http';
+import { Server } from "socket.io";
+import { setupSocket } from "./socket io/socket.js";
+
 
 const app = express()
+const server= http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin:"*",
+    methods:["GET", "POST"]
+  }
+});
 
+setupSocket(io);
 
 app.use(cors({ credentials: true, origin: "*" }))
 

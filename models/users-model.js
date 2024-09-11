@@ -10,7 +10,7 @@ const userSchema = new Schema({
   email: { type: String},
   password: { type: String},
   confirmPassword: {type: String},
-  userProfile: { type: Types.ObjectId, ref: 'Profile'}
+  profile: { type: Types.ObjectId, ref: 'Profile'}
 
 },{
     timestamps:true

@@ -5,7 +5,7 @@ const scrollingPageSchema = new Schema({
     title: { type: String},
     description: { type: String},
     image: { type: String},
-    user_Model: { type: Types.ObjectId, ref: 'User'},
+    user: { type: Types.ObjectId, ref: 'User'},
     like:[{ type:Types.ObjectId, ref:'Like'}],
     comment:[{type: Types.ObjectId, ref:" Comment "}]
 

@@ -61,8 +61,12 @@ export const logIn = async (req, res, next) => {
             //Return Response
             res.status(201).json({
                 message: "Login Sucessfully",
-                accessToken: token
-            });
+                accessToken: token,
+                user: {
+                    firstName:user.firstName,
+                    userName: user.userName,
+                    lastName: user.lastName
+        }})
         }
 
     } catch (error) {
@@ -75,13 +79,18 @@ export const getUser = async (req, res, next) => {
     try {
         const userName = req.params.userName.toLowerCase();
 
-        const optins ={ sort: { startDate: -1 } }
+        const options ={ sort: { startDate: -1 } }
 
         const findSignUp = await User_Model.findOne({ userName }).select("-password")
         .populate({
             path: "userProfile",
             options,
-        });
+        })
+        
+        .populate("userProfile")
+        .populate("scrolling-page")
+        
+        ;
 
         return res.status(200).json({ user: findSignUp })
 
@@ -91,9 +100,43 @@ export const getUser = async (req, res, next) => {
 
 }
 
+// export const getUser = async (req, res) => {
+//     console.log(req.body)
+
+//         try {
+//             const userId = req.session?.user?.id || req?.user.id;
+
+//             // if(!userId){
+//             //     return res.status(400).json({ error: "User ID not found in session or request." });
+//             // }
+
+//             const user = await User_Model.findOne({ user: userId })
+//                 .populate({
+//                     path: 'user',
+//                     select:'-password'
+//                 });
+              
+//                 if (!user) {
+//                     return res.status(400).json({ error: "profile not found", userId: userId });
+//                 }
+
+//                 res.status(200).json({ user: user  });
+
+                
+
+//         } catch (error) {
+
+//             console.error(error);
+//             return res.status(500).json({ error: "Server error" }); 
+            
+//         }
+
+
+// };
+
 export const getAllUsers = async (req, res) => {
 
-    const email = req.query.email?.toLowerCase();
+    // const email = req.query.email?.toLowerCase();
     const userName = req.query.userName?.toLowerCase();
 
     const filter = {};
@@ -112,7 +155,7 @@ export const getAllUsers = async (req, res) => {
 export const getAllemail = async (req, res) => {
 
     const email = req.query.email?.toLowerCase();
-    const userName = req.query.userName?.toLowerCase();
+    // const userName = req.query.userName?.toLowerCase();
 
     const filter = {};
 
